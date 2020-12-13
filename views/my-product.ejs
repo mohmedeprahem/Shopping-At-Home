@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/product.css">
+        <link rel="stylesheet" href="../css/header.css">
+        <link rel="stylesheet" href="../css/products.css">
+        <title>shop</title>
+    </head>
+<body>
+    <%- include('include/header.ejs')  %>
+    <!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+    <title>Product Card UI Design</title>
+
+</head>
+
+<body>
+    <div class="container">
+        <% myProduct.forEach(product => { %>
+            <div class="card">
+                <div class="imgBx">
+                    <img src="<%= product.img %> " alt="nike-air-shoe">
+                </div>
+                <div class="contentBx">
+                    <h2><%= product.name %></h2>
+                    <h2><%= product.price %>$</h2>
+                    <div class="size">
+                        <h3>Size :</h3>
+                        <span>7</span>
+                        <span>8</span>
+                        <span>9</span>
+                        <span>10</span>
+                    </div>
+                    <div class="color">
+                        <h3>Color :</h3>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="sitting-product">
+                        <form action="/my-product/edit" method="POST">
+                            <input type="hidden" name="productId" value="<%= product._id %>">
+                            <button class="buy-now-button">Edit</button>
+                        </form>
+                        <form action="/my-product/delete" method="POST">
+                            <input type="hidden" name="productId" value="<%= product._id %>">
+                            <button class="buy-now-button">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</body>
+</html>
+</body>
+</html>

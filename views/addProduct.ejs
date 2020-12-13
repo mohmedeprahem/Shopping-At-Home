@@ -1,0 +1,16 @@
+<%- include('include/head.ejs')  %> 
+<body>
+    <%- include('include/header.ejs')  %>
+    <br>
+    <form action="/add-product" enctype="multipart/form-data" method="POST">
+        <%= typeof msg !== 'undefined'  ? msg : '' %>
+        <br>
+        <label >name:</label>
+        <input type="text" name="productName"><br><br>
+        <label>img:</label>
+        <input type="file"  name="image"><br><br>
+        <label>price</label>
+        <input type="number" step=0.01 name="price">
+        <input type="submit" value="add">
+    </form>
+</body>

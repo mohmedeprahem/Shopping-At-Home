@@ -1,0 +1,29 @@
+.header-ul{
+    background-color: #333;
+}
+
+.header-item{
+    float: left;
+    border-right:1px solid #bbb;
+}
+.header-item :last-child {
+    border-right: none;
+}
+
+.header-link { 
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.header-link:hover, .header-link:active {
+    background-color: green;
+    color: white;
+}
+
+.active {
+    background-color: #4CAF50;
+ }
+  

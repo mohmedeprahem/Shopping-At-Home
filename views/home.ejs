@@ -1,0 +1,10 @@
+<%- include('include/head.ejs')  %> 
+<body>
+    <%- include('include/header.ejs')  %> 
+    <div class="all-product">
+        <% products.forEach(product => { %>
+            <%- include('include/product.ejs', {product: product})  %> 
+        <% }) %> 
+    </div>
+</body>
+</html>

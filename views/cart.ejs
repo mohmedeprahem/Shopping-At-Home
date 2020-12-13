@@ -1,0 +1,40 @@
+<%- include('include/head.ejs')  %> 
+<body>
+  <%- include('include/header.ejs')  %>
+  <div class="container"> 
+    <div class="products-container">
+      <% cartOfUser.productBuy.forEach(product => { %>
+        <div class="card">
+          <div class="product">
+            <div class="product-data">
+              <p class="product-name"><%= product.name %></p>
+              <img src="<%= product.img %> " alt="product">
+            </div>
+            <p class="counter"> x<%= product.cart %> </p>
+          </div>
+          <div class="product-control">
+            <p class="price"><%= product.price %>$</p>
+            <form action="/cart/delete/<%= product.productId %>" method="GET">
+              <button type="submit">Delete</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+      <div class="side-bar">
+        <div class="price">
+          <p class="total-price">
+            Total price
+          </p>
+          <p class="total-price">
+            <%= cartOfUser.totalPrice %> $
+          </p>
+          <form action="/cart/buy" method="GET">
+            <button class="checkout-btn" type="submit">Check out</button>
+          </form>
+        </div>
+      </div>  
+  </div>
+  
+</body>
+</html>

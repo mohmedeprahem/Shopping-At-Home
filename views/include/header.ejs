@@ -1,0 +1,15 @@
+<ul class="header-ul">
+    <li class="header-item"><a class="header-link <%= path === '/home'? 'active' : '' %>" href="/">Home</a></li>
+    <% if (isLogin) { %> 
+        <li class="header-item"><a class="header-link <%= path === '/cart'? 'active' : '' %>  " href="/cart">cart</a></li>
+        <li class="header-item"><a class="header-link <%= path === '/my-product'? 'active' : '' %>" href="/my-product">my product</a></li>
+        <li class="header-item"><a class="header-link <%= path === '/add-product'? 'active' : '' %>" href="/add-product">add product</a></li>
+        <% if (typeof edit !== 'undefined') { %>
+            <li class="header-item"><a class="header-link <%= path === '/edit-product'? 'active' : '' %>" href="/edit-product">edit product</a></li>
+        <% } %> 
+        <li class="header-item" style="float:right"><a class="header-link <%= path === '/logout'? 'active' : '' %>" href="/logout">Logout</a></li>
+    <% } else { %>  
+        <li class="header-item" style="float:right"><a class="header-link <%= path === '/sign-up'? 'active' : '' %>" href="/sign-up">sign Up</a></li>
+        <li class="header-item" style="float:right"><a class="header-link <%= path === '/login'? 'active' : '' %>" href="/login">login</a></li>
+    <% } %> 
+</ul>

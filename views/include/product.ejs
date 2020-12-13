@@ -1,0 +1,9 @@
+<div class="container-all-product">
+    <p class="price"> <%= product.price %> $</p>
+    <img class="product-img-global" src=" <%= product.img %>  ">
+        <ul class="flex-container space-evenly">
+            <li><a class="flex-item" href="/details/<%= product._id %>">details</a></li>
+            <input type="hidden" name="id" value="<%= product._id %>">
+            <li><a class="flex-item" href="/cart/add/<%= product._id %> ">add</a></li>
+        </ul>
+</div>
