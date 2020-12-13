@@ -42,6 +42,7 @@ exports.addProduct = async (req, res) => {
         fileFilter: imgInfo.img.filefilter
     }).single('image')
     upload(req, res, async (err) => {
+        // if user send bad file extantion or didnt send img
         if (err) {
             console.log(err);
             res.render('addProduct', {
@@ -49,7 +50,7 @@ exports.addProduct = async (req, res) => {
                 msg: err,
                 isLogin : req.session.isLogin
             })
-        } else{
+        } else {
             const product = new productSchema.Product({
                 name: req.body.productName,
                 img: path.join('../upload/img/' + req.file.filename),
@@ -93,7 +94,7 @@ exports.editMyProductPage = async (req, res) => {
 // @routes: post '/my-product/edit'
 // @access: private
 exports.editMyProduct = async (req, res) => {
-    console.log(req.query)
+
     let product = await productSchema.Product.findById(req.body.productId);
     console.log(product)
     product.name = req.body.productName;
