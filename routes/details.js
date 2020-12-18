@@ -6,7 +6,7 @@ const routes = express.Router();
 const productController = require('../controllers/product');
 
 // @dics: view details about product
-// @routes: get '/details/:productId'
+// @routes: post '/details/:productId'
 // @access: public
 routes.get('/details/:productId', productController.viewDetailsPage);
 

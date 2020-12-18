@@ -4,13 +4,14 @@
     <form action="/sign-up" method="POST">
         <label>username:</label><br>
         <input type="text" name="username"><br><br>
-        <% if(isSuccessful){ %>
-        <p>!!email is used</p>
+        <% if(errorMessege){ %>
+        <p><%= errorMessege %> </p>
         <% } %> 
         <label>email:</label><br>
         <input type="text" name="email"><br><br>
         <label>password:</label><br>
         <input type="text" name="password"><br>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input type="submit" value="Sign Up">
     </form>
 

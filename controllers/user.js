@@ -1,16 +1,22 @@
+// modules requirement
+const ObjectId = require('mongodb').ObjectID;
+const bcrypt = require('bcryptjs');
+
+
 // database file
 const mongoose = require('mongoose');
 const productSchema = require('../models/product');
 const userSchema = require('../models/user');
-const ObjectId = require('mongodb').ObjectID;
+
 // @dics: get login page
 // @routes: GET '/login'
 // @access: public
 exports.viewLoginPage = (req, res) => {
     res.status(202).render('login', {
         path: '/login',
-        found: true,
-        isLogin : false
+        isLogin : false,
+        errorMessege: req.flash('error'),
+        csrfToken: req.csrfToken()
     });
 }
 
@@ -21,8 +27,9 @@ exports.viewLoginPage = (req, res) => {
 exports.viewSignUpPage = (req, res) => {
     res.status(202).render('signup', {
         path: '/sign-up',
-        isSuccessful : false,
-        isLogin : false
+        errorMessege: req.flash('error'),
+        isLogin : false,
+        csrfToken: req.csrfToken()
     });
 }
 
@@ -33,15 +40,17 @@ exports.addNewUser = async (req, res) => {
     try {
         // check if email is already used
         let result = await userSchema.User.findOne({email: req.body.email});
-
+        let hashPassword = await bcrypt.hash(req.body.password, 12);
+        
         // add new user
-        if(!result){
+        if (!result) {
             let user = new userSchema.User({
                 name: req.body.username,
                 email: req.body.email,
-                password: req.body.password
+                password: hashPassword
             });
             result = await user.save();
+            
             // active session
             req.session.isLogin = true;
             req.session.userID = await result._id;
@@ -52,15 +61,11 @@ exports.addNewUser = async (req, res) => {
             
         } else {
             // if email is already used
-            return res.status(400).render('signup', {
-                path: '/sign-up',
-                isSuccessful : true,
-                isLogin : false,
-            })
+            req.flash('error', 'email is already used')
+            return res.redirect('/sign-up');
         }
 
-    }
-    catch(err){
+    } catch(err) {
         
     } 
 }
@@ -69,32 +74,29 @@ exports.addNewUser = async (req, res) => {
 // @routes: POST '/login'
 // @access: private
 exports.login = async (req, res) => {
-    try {
+try{
         // check if email is true
-        let result = await userSchema.User.findOne({email: req.body.email});
+        let user = await userSchema.User.findOne({email: req.body.email});
+        
 
-        // if email is true
-        if(result){
+        if (user) {
+            
             // check if password is true
-            if(result.password === req.body.password){
+            let result = await bcrypt.compare(req.body.password, user.password)
+            if (result) {
                 req.session.isLogin = true;
-                req.session.userID = await result._id
-                req.session.save(err => {
+                req.session.userID = await user._id
+                return req.session.save(err => {
                     console.log(err);
                     res.status(200).redirect('/');
-                });
-            } else {
-                // if email or password is false
-                return res.status(400).render('login', {
-                    path: '/login',
-                    found: false,
-                    isLogin : false 
-                })
-            }
+                }); 
+            } 
         }
-    } catch(err) {
-            console.log(err.massage)
-    }
+            req.flash('error', 'email or password is false')
+            return res.redirect('/login');
+    } catch (error) {
+        console.log(massege.err);
+    } 
 }
 
 // @dics: logout
@@ -104,17 +106,13 @@ exports.logout = (req, res) => {
     req.session.destroy(err => {
         console.log(err);
         res.redirect('/');
-      });
+    });
 }
 
 // @dics: add product to card
 // @routes: GET '/cart/add/:id'
 // @access: private
 exports.addCard = async (req, res) => {
-    // check if user doesn't login then return him to login page becouse user can't add new product if he logout
-    if(!req.session.userID){
-        return res.redirect('/login');
-    }
     // get details of product
     let product = await productSchema.Product.findById(req.params.id);
     // add data of product to crat of user in database
@@ -147,7 +145,7 @@ exports.viewCartPage = async (req, res) => {
     res.render('cart', {
         cartOfUser: cartOfUser.addCart,
         path: '/cart',
-        isLogin : req.session.isLogin
+        csrfToken: req.csrfToken()
     })
 }
 
@@ -176,7 +174,7 @@ exports.deleteProductFromCart = async (req, res) => {
         productId: ObjectId(req.params.productId)
     });
     
-    let result = await cartOfUser.save();
+    await cartOfUser.save();
     res.redirect('/cart')
 }
 

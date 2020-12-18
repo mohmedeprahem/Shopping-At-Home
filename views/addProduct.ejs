@@ -2,9 +2,10 @@
 <body>
     <%- include('include/header.ejs')  %>
     <br>
-    <form action="/add-product" enctype="multipart/form-data" method="POST">
+    <form action="/add-product?_csrf=<%= csrfToken %>"  method="POST" enctype="multipart/form-data">
         <%= typeof msg !== 'undefined'  ? msg : '' %>
         <br>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <label >name:</label>
         <input type="text" name="productName"><br><br>
         <label>img:</label>

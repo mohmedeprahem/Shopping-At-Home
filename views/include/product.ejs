@@ -1,9 +1,32 @@
-<div class="container-all-product">
-    <p class="price"> <%= product.price %> $</p>
-    <img class="product-img-global" src=" <%= product.img %>  ">
-        <ul class="flex-container space-evenly">
-            <li><a class="flex-item" href="/details/<%= product._id %>">details</a></li>
-            <input type="hidden" name="id" value="<%= product._id %>">
-            <li><a class="flex-item" href="/cart/add/<%= product._id %> ">add</a></li>
-        </ul>
+<div class="card">
+    <div class="imgBx">
+        <img src="<%= product.img %> " alt="nike-air-shoe">
+    </div>
+    <div class="contentBx">
+        <h2><%= product.name %></h2>
+        <h2><%= product.price %>$</h2>
+        <div class="size">
+            <h3>Size :</h3>
+            <span>7</span>
+            <span>8</span>
+            <span>9</span>
+            <span>10</span>
+        </div>
+        <div class="color">
+            <h3>Color :</h3>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="sitting-product">
+            <form action="/details/<%= product._id %>" method="GET">
+                <button class="buy-now-button">Details</button>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            </form>
+            <form action="/cart/add/<%= product._id %>" method="POST">
+                <button class="buy-now-button">Add</button>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            </form>
+        </div>
+    </div>
 </div>

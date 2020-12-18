@@ -49,10 +49,12 @@
                     <div class="sitting-product">
                         <form action="/my-product/edit" method="POST">
                             <input type="hidden" name="productId" value="<%= product._id %>">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button class="buy-now-button">Edit</button>
                         </form>
                         <form action="/my-product/delete" method="POST">
                             <input type="hidden" name="productId" value="<%= product._id %>">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button class="buy-now-button">Delete</button>
                         </form>
                     </div>

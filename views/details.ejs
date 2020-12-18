@@ -36,10 +36,11 @@
             <h1><%= product.name %> </h1>
             <h2><%= product.price %>$ </h2>
             <p class="desc">The Nike Epic React Flyknit foam cushioning is responsive yet light-weight, durable yet soft. This creates a sensation that not only enhances the feeling of moving forward, but makes running feel fun, too.</p>
-            <form action="/cart/add/<%= product._id %> ">
+            <form action="/cart/add/<%= product._id %>" method="POST">
                 <div class="buttons">
                     <button class="add">Add to Cart</button>
                     <button class="like"><span>♥</span></button>
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 </div>
             </form>
             </div>

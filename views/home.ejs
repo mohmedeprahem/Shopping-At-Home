@@ -1,7 +1,16 @@
-<%- include('include/head.ejs')  %> 
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/product.css">
+        <link rel="stylesheet" href="../css/header.css">
+        <link rel="stylesheet" href="../css/products.css">
+        <title>shop</title>
+    </head>
 <body>
     <%- include('include/header.ejs')  %> 
-    <div class="all-product">
+    <div class="container">
         <% products.forEach(product => { %>
             <%- include('include/product.ejs', {product: product})  %> 
         <% }) %> 

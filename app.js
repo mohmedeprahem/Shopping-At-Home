@@ -1,4 +1,5 @@
 // packages requirement
+const flash = require('connect-flash');
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path')
@@ -6,12 +7,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const multer = require('multer');
-
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+const csrf = require('csurf')
 
 // connect session cookies to mongodb
 let store = new MongoDBStore({
@@ -21,6 +17,19 @@ let store = new MongoDBStore({
 
 
 
+// set the view engine to ejs
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// access to public folder
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+
+// setup route middlewares of csrf token
+const csrfProtection = csrf();
+
 // connect to session
 app.use(require('express-session')({
     secret: 'This is a secret',
@@ -29,12 +38,18 @@ app.use(require('express-session')({
     saveUninitialized: false
 }));
 
-// set the view engine to ejs
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// add token to any page
+app.use(csrfProtection);
 
-// access to public folder
-app.use(express.static(path.join(__dirname, 'public')));
+// init connect-flash module
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.isLogin = req.session.isLogin;
+    next();
+});
+
+
 
 // routes files
 const homeRoutes = require('./routes/home');

@@ -3,6 +3,7 @@ const productSchema = require('../models/product');
 const userSchema = require('../models/user');
 const ObjectId = require('mongodb').ObjectID;
 
+
 // loading modules
 const multer = require('multer');
 const fs = require('fs');
@@ -17,8 +18,8 @@ exports.viewHomePage = async (req, res) => {
     const products = await productSchema.Product.find();
     res.render('home', {
         path: '/home',
-        isLogin : req.session.isLogin,
-        products: products
+        products: products,
+        csrfToken: req.csrfToken()
     });
 }
 
@@ -28,7 +29,7 @@ exports.viewHomePage = async (req, res) => {
 exports.viewAddProductPage = (req, res) => {
     res.render('addProduct', {
         path: '/add-product',
-        isLogin : req.session.isLogin
+        csrfToken: req.csrfToken()
     })
 }
 
@@ -48,7 +49,7 @@ exports.addProduct = async (req, res) => {
             res.render('addProduct', {
                 path: '/add-product',
                 msg: err,
-                isLogin : req.session.isLogin
+                csrfToken: req.csrfToken()
             })
         } else {
             const product = new productSchema.Product({
@@ -59,7 +60,7 @@ exports.addProduct = async (req, res) => {
             });
             await product.save();
 
-            res.redirect('/add-product');
+            res.redirect('/my-product');
         }
     })
 }
@@ -71,8 +72,8 @@ exports.viewMyProductPage = async (req, res) => {
     let myProduct = await productSchema.Product.find({owner: req.session.userID}).select({__v: 0});
     res.render('my-product', {
         path: '/my-product',
-        isLogin : req.session.isLogin,
-        myProduct: myProduct
+        myProduct: myProduct,
+        csrfToken: req.csrfToken()
     })
 };
 
@@ -84,9 +85,9 @@ exports.editMyProductPage = async (req, res) => {
     let myProduct = await productSchema.Product.findById(req.body.productId).select({ __v: 0 });
     res.render('edit-product', {
         path: '/edit-product',
-        isLogin : req.session.isLogin,
         edit: true,
-        product: myProduct
+        product: myProduct,
+        csrfToken: req.csrfToken()
     });
 };
 
@@ -150,7 +151,7 @@ exports.viewDetailsPage = async (req, res) => {
     let product = await productSchema.Product.findById(req.params.productId).select({ __v: 0 });
     res.render('details', {
         path: '/home',
-        isLogin : req.session.isLogin,
-        product: product
+        product: product,
+        csrfToken: req.csrfToken()
     });
 }

@@ -12,6 +12,7 @@
         <input type="file"  name="newImage">
         <input type="hidden"  name="oldImage" value="<%= product.img %>"><br><br>
         <img src="<%= product.img %>" alt=""><br><br>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input type="submit" value="Edit">
     </form>
 </body>

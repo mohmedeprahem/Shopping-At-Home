@@ -1,14 +1,15 @@
 <%- include('include/head.ejs')  %> 
 <body>
     <%- include('include/header.ejs')  %>
-    <% if(!found) { %>
-        <p>email or password not found</p> 
+    <% if(errorMessege) { %>
+        <p><%= errorMessege %> </p> 
     <% } %> 
     <form action="/login" method="POST">
         <label>email:</label><br>
         <input type="text" name="email"><br><br>
         <label>password:</label><br>
         <input type="text" name="password"><br>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input type="submit" value="Login">
     </form> 
 </body>
