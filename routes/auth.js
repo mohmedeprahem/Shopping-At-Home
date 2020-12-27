@@ -27,4 +27,24 @@ routes.post('/login', userController.login);
 // @access: private
 routes.get('/logout', userController.logout);
 
+// @dics: get reset password page
+// @routes: GET '/reset-password'
+// @access: private
+routes.get('/reset-password', userController.resetPasswordPage);
+
+// @dics: send to mail to user to change password
+// @routes: POST '/reset-password'
+// @access: private
+routes.post('/reset-password', userController.sendmail);
+
+// @dics: get new-password page
+// @routes: GET '/reset-password/:token'
+// @access: private
+routes.get('/reset-password/:token', userController.getCreateNewPassword);
+
+// @dics: post new password
+// @routes: POST '/reset-password/;token'
+// @access: private
+routes.post('/reset-password/:token', userController.changePassword);
+
 module.exports = routes;

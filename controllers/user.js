@@ -1,7 +1,10 @@
 // modules requirement
 const ObjectId = require('mongodb').ObjectID;
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
+// config files
+const mailer = require('../config/send-mail');
 
 // database file
 const mongoose = require('mongoose');
@@ -190,4 +193,88 @@ exports.buyProductCart = async (req, res) => {
     cartOfUser.addCart.totalPrice = 0;
     await cartOfUser.save();
     res.redirect('/cart')
+}
+
+// @dics: get reset password page
+// @routes: GET '/reset-password'
+// @access: private
+exports.resetPasswordPage = (req, res) => {
+    res.render('reset-password', {
+        path:'/reset',
+        csrfToken: req.csrfToken(),
+        errorMessege: req.flash('error')
+    });
+}
+
+// @dics: get reset password page
+// @routes: GET '/reset-password'
+// @access: private
+exports.resetPasswordPage = (req, res) => {
+    
+    res.render('reset-password', {
+        path:'/reset',
+        csrfToken: req.csrfToken(),
+        errorMessege: req.flash('error')
+    });
+}
+
+// @dics: send to mail to user to change password
+// @routes: POST '/reset-password'
+// @access: private
+exports.sendmail = async (req, res) => {
+    const email = req.body.email;
+    const user = await userSchema.User.findOne({email: email});
+    if (!user){
+        req.flash('error', 'email is not found');
+        return res.redirect('/reset-password');
+    } else {
+        let buffer = crypto.randomBytes(32);
+        const token = buffer.toString('hex');
+        user.resetToken = token;
+        user.resetTokenExpierd = Date.now() + 3600000;
+        await user.save();
+        let send = {
+            from: 'm.eprahem.168@gmail.com',
+            to: email,
+            subject: 'reset password',
+            html: `<p>click here: <a href="http://localhost:3000/reset-password/${token}">create new password</a></p>`
+        };
+        mailer.sendMail(send);
+        req.flash('error', 'check your mail');
+        res.redirect('/reset-password');
+    }
+}
+
+// @dics: get new-password page
+// @routes: GET '/reset-password/:token'
+// @access: private
+exports.getCreateNewPassword = async (req, res) => {
+    const user = await userSchema.User.findOne({resetToken: req.params.token, resetTokenExpierd: {$gt: Date.now()}})
+    if(!user){
+        res.redirect('/login');
+    } else {
+        res.render('new-password', {
+            token: user.resetToken,
+            path:'/reset',
+            csrfToken: req.csrfToken(),
+        })
+    }
+}
+
+// @dics: post new password
+// @routes: POST '/reset-password/;token'
+// @access: private
+
+exports.changePassword = async (req, res) => {
+    const user = await userSchema.User.findOne({resetToken: req.params.token, resetTokenExpierd: {$gt: Date.now()}})
+    if(!user){
+        res.redirect('/login');
+    } else {
+        let hashPassword  = await bcrypt.hash(req.body.newPassword, 12);
+        user.password = hashPassword;
+        user.resetToken = undefined;
+        user.resetTokenExpierd = undefined;
+        await user.save();
+        res.redirect('/login')
+    }
 }
