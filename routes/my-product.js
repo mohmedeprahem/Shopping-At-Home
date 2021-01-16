@@ -17,7 +17,7 @@ routes.post('/my-product/edit', isAuth, productController.editMyProductPage)
 // @dics: edit my product
 // @routes: post '/my-product/edit/done'
 // @access: private
-routes.post('/my-product/edit/done', isAuth, productController.editMyProduct)
+routes.post('/my-product/edit/done/:productId', isAuth, productController.editMyProduct)
 
 // @dics: delete my product
 // @routes: post '/my-product/delete'

@@ -65,7 +65,9 @@ app.use(detailsRoutes)
 const myProductRoutes = require('./routes/my-product');
 app.use(myProductRoutes)
 
-
+// middleware files
+const errorHandler = require('./middleware/error');
+app.use(errorHandler);
 
 
 
