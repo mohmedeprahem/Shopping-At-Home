@@ -69,15 +69,15 @@ app.use(myProductRoutes)
 const errorHandler = require('./middleware/error');
 app.use(errorHandler);
 
-
+const port = process.env.PORT || 3000
 
 
 // connect to server and dataBase
-mongoose.connect('mongodb://localhost/shop', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.agwjz.mongodb.net/shop?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(result => {
     console.log('connect to mongodbs')
-    app.listen(3000);
-    console.log('connect to port 3000')
+    app.listen(port);
+    console.log(`connect to port ${port}`)
 })
 .catch(err => {
     console.log(err);
