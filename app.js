@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf')
+require('dotenv').config({path: `./config/config.env`});
 
 // connect session cookies to mongodb
 let store = new MongoDBStore({
