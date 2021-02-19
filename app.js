@@ -12,7 +12,7 @@ require('dotenv').config({path: `./config/config.env`});
 
 // connect session cookies to mongodb
 let store = new MongoDBStore({
-    uri: 'mongodb://localhost/shop',
+    uri: process.env.MONGO_URI,
     collection: 'mySessions'
 });
 
