@@ -73,7 +73,7 @@ const port = process.env.PORT || 3000
 
 
 // connect to server and dataBase
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.agwjz.mongodb.net/shop?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI , { useNewUrlParser: true, useUnifiedTopology: true })
 .then(result => {
     console.log('connect to mongodbs')
     app.listen(port);
