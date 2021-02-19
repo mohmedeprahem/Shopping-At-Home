@@ -2,6 +2,9 @@
   "engines": {
     "node": "15.2.0"
   },
+  "scripts": {
+    "start": "node index.js"
+ },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
