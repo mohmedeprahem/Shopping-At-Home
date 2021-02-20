@@ -10,7 +10,6 @@
     </head>
 <body>
     <%- include('include/header.ejs')  %> 
-    <h1>hi</h1>
     <div class="container">
         <% products.forEach(product => { %>
             <%- include('include/product.ejs', {product: product})  %> 
